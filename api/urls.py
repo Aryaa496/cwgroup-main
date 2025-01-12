@@ -19,7 +19,18 @@ from django.urls import include, path
 from django.http import HttpResponse
 
 from .views import main_spa
+from .views import login_view
+
+# Added login url 
+# urlpatterns = [
+#     path('', main_spa),
+#     path("api/login/", login_view, name="login"),
+# ]
 
 urlpatterns = [
+    
+    path('login/', login_view, name='login'),
     path('', main_spa),
+
+    # path('admin/', admin.site.urls),
 ]
