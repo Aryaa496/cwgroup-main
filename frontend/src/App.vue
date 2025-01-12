@@ -1,19 +1,14 @@
 <template>
     <main class="container pt-4">
         <div>
+        
             <router-link
-                class=""
-                :to="{name: 'Main Page'}"
+                
+                :to="{name: 'MainPage'}"
             >
-                Main Page
+                MainPage
             </router-link>
-            |
-            <router-link
-                class=""
-                :to="{name: 'Other Page'}"
-            >
-                Other Page
-            </router-link>
+           
         </div>
         <RouterView class="flex-shrink-0" />
     </main>
