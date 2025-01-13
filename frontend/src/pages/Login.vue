@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="login-container">
     <h2>Login</h2>
@@ -25,7 +23,6 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-
 export default defineComponent({
   name: "Login",
   setup() {
@@ -35,15 +32,29 @@ export default defineComponent({
 
     const login = async () => {
       try {
-        const response = await axios.post("http://localhost:8000/api/login/", {
-          username: username.value,
-          password: password.value,
+        // Make a POST request to your Django API endpoint for login
+        const response = await fetch("http://localhost:8000//", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: username.value,
+            password: password.value,
+          }),
         });
-        // Store JWT tokens in localStorage or Vuex
-        localStorage.setItem("access_token", response.data.access);
-        localStorage.setItem("refresh_token", response.data.refresh);
 
-        // Redirect to another page or show success message
+        if (!response.ok) {
+          throw new Error("Invalid credentials");
+        }
+
+        const data = await response.json();
+        
+        // Store JWT tokens in localStorage
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+
+        // Redirect or show success message
         alert("Login successful!");
       } catch (err) {
         error.value = "Invalid credentials";
