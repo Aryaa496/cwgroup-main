@@ -1,87 +1,27 @@
 <template>
-  <div class="login-container">
+  <div>
     <h2>Login</h2>
-    <form @submit.prevent="login">
-      <div>
-        <label for="username">Username</label>
-        <input type="text" id="username" v-model="username" required />
-      </div>
-      <div>
-        <label for="password">Password</label>
-        <input type="password" id="password" v-model="password" required />
-      </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
+    <form @submit.prevent="handleLogin">
+      <input v-model="email" type="email" placeholder="Email" required />
+      <input v-model="password" type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
     </form>
-    <div v-if="error" class="error">
-      <p>{{ error }}</p>
-    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup>
+import { ref } from 'vue';
+import { useUserStore } from '@/user.js';
 
-export default defineComponent({
-  name: "Login",
-  setup() {
-    const username = ref("");
-    const password = ref("");
-    const error = ref("");
+const email = ref('');
+const password = ref('');
+const userStore = useUserStore();
 
-    const login = async () => {
-      try {
-        // Make a POST request to your Django API endpoint for login
-        const response = await fetch("http://localhost:8000//", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: username.value,
-            password: password.value,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Invalid credentials");
-        }
-
-        const data = await response.json();
-        
-        // Store JWT tokens in localStorage
-        localStorage.setItem("access_token", data.access);
-        localStorage.setItem("refresh_token", data.refresh);
-
-        // Redirect or show success message
-        alert("Login successful!");
-      } catch (err) {
-        error.value = "Invalid credentials";
-      }
-    };
-
-    return {
-      username,
-      password,
-      error,
-      login,
-    };
-  },
-});
+const handleLogin = async () => {
+  await userStore.login(email.value, password.value);
+  if (userStore.accessToken) {
+    // Redirect or show user profile after successful login
+    console.log('Login successful, token:', userStore.accessToken);
+  }
+};
 </script>
-
-<style scoped>
-.login-container {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.error {
-  color: red;
-  margin-top: 10px;
-}
-</style>

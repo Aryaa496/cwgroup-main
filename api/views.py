@@ -3,7 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import CustomUser  # Import your custom user model
+from .models import CustomUser 
+from django.views.decorators.csrf import csrf_exempt
+
+ # Import your custom user model
 
 # Main SPA (Single Page Application) view
 def main_spa(request: HttpRequest) -> HttpResponse:
@@ -14,6 +17,7 @@ def login_view(request):
     return HttpResponse("Hello world!")
 
 # Django authentication with email instead of username
+@csrf_exempt
 def login_view1(request):
     if request.method == "POST":
         email = request.POST.get('email')  # Get email input from form
@@ -39,3 +43,13 @@ def login_view1(request):
     
     # Render the login page template (GET request)
     return render(request, 'login.html')
+@csrf_exempt
+def user_profile(request):
+    
+    user_data={
+        'name':request.POST.get('name'),
+        'email':request.POST.get('email'),
+        
+
+    }
+    return JsonResponse(user_data)

@@ -19,7 +19,7 @@ from django.urls import include, path
 from django.http import HttpResponse
 
 from .views import main_spa
-from .views import login_view
+from .views import login_view,user_profile
 
 # Added login url 
 # urlpatterns = [
@@ -30,6 +30,7 @@ from .views import login_view
 urlpatterns = [
     
     path('login/', login_view, name='login'),
+    path('profile/',user_profile,name='profile'),
     path('', main_spa),
 
     # path('admin/', admin.site.urls),
