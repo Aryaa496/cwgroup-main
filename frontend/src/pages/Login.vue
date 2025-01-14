@@ -11,17 +11,21 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useUserStore } from '@/user.js';
+import { useUserStore } from '@/user.js';  // Pinia store for user management
 
 const email = ref('');
 const password = ref('');
 const userStore = useUserStore();
 
 const handleLogin = async () => {
-  await userStore.login(email.value, password.value);
-  if (userStore.accessToken) {
-    // Redirect or show user profile after successful login
-    console.log('Login successful, token:', userStore.accessToken);
+  try {
+    await userStore.login(email.value, password.value);  // Call login function from store
+    if (userStore.accessToken) {
+      console.log('Login successful');
+      // Redirect or show user profile after successful login
+    }
+  } catch (error) {
+    console.error('Login failed:', error);
   }
 };
 </script>

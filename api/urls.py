@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.http import HttpResponse
 
-from .views import main_spa
+from .views import login_view1
 from .views import login_view,user_profile
 
 # Added login url 
@@ -29,9 +29,9 @@ from .views import login_view,user_profile
 
 urlpatterns = [
     
-    path('login/', login_view, name='login'),
+    path('login/', login_view1, name='login'),
     path('profile/',user_profile,name='profile'),
-    path('', main_spa),
+    # path('', main_spa),
 
     # path('admin/', admin.site.urls),
 ]

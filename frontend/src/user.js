@@ -11,22 +11,25 @@ export const useUserStore = defineStore('user', () => {
       const response = await fetch('http://localhost:8000/login/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // Send data as JSON
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password }), // Send email and password as JSON
       });
-
-      if (!response.ok) {
-        throw new Error('Invalid credentials');
-      }
-
+  
       const data = await response.json();
-      accessToken.value = data.access;
-      localStorage.setItem('access_token', accessToken.value);
+      
+      if (response.ok) {
+        accessToken.value = data.access; // Assuming the backend returns a field named 'access'
+        localStorage.setItem('access_token', accessToken.value); // Store the token in localStorage
+        console.log('Login successful:', data.success);
+      } else {
+        console.log('Login failed:', data.error);
+      }
     } catch (error) {
       console.error('Login failed:', error);
     }
   };
+  
 
   // Fetch user profile
   const fetchUserProfile = async () => {
@@ -34,20 +37,21 @@ export const useUserStore = defineStore('user', () => {
       const response = await fetch('http://localhost:8000/profile/', {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${accessToken.value}`,
+          'Authorization': `Bearer ${accessToken.value}`, // Include the token here
         },
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to fetch user profile');
       }
-
+  
       const data = await response.json();
       user.value = data;
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
   };
+  
 
   return {
     user,
