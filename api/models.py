@@ -70,5 +70,6 @@ class CustomUser(AbstractUser):
 
         # Call the parent save method again to ensure proper saving
         super().save(*args, **kwargs)
+        
  # Link the custom manager
 

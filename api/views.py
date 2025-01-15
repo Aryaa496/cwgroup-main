@@ -63,6 +63,7 @@ def user_profile(request):
             'date_of_birth':request.user.date_of_birth,
             'hobbies': hobby_name
             
+            
         }
         return JsonResponse(user_data)
     return JsonResponse({'error': 'User not authenticated'}, status=401)

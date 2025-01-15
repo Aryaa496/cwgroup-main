@@ -53,7 +53,8 @@ export const useUserStore = defineStore('user', () => {
       user.value = data;
       const hobbies = data.hobbies || [];
         console.log('Hobbies:', hobbies);
-    } catch (error) {
+    } catch (error)
+     {
       console.error('Error fetching user profile:', error);
     }
     
