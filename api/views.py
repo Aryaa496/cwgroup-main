@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import CustomUser
 from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
 
 # This is the login view (Simple success message for login)
 @csrf_exempt
@@ -11,8 +12,11 @@ def login_view(request):
     return JsonResponse({'message': 'Hello World!'}, status=200)
 
 # Django authentication with email instead of username
-@csrf_exempt
+# @csrf_exempt
 def login_view1(request):
+    if request.method == 'GET':
+        # Return a simple response with a CSRF token
+        return JsonResponse({'message': 'CSRF token fetched successfully'}, status=200)
     if request.method == "POST":
         # Parse JSON request body
         try:
@@ -39,7 +43,10 @@ def login_view1(request):
             return JsonResponse({'error': 'Invalid Password.'}, status=400)
 
         login(request, user)
-        return JsonResponse({'success': 'Logged in successfully.'})
+        csrf_token = get_token(request)
+        response = JsonResponse({'success': 'Logged in successfully.'})
+        response.set_cookie('csrftoken', csrf_token)
+        return response
 
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
 

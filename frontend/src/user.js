@@ -6,14 +6,16 @@ export const useUserStore = defineStore('user', () => {
   const accessToken = ref(localStorage.getItem('access_token') || null);
 
   // Login function
-  const login = async (email, password) => {
+  const login = async (email, password, csrfToken) => {
     try {
       const response = await fetch('http://localhost:8000/login/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Send data as JSON
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,  
         },
         body: JSON.stringify({ email, password }), // Send email and password as JSON
+        credentials: 'include',
       });
   
       const data = await response.json();

@@ -18,11 +18,17 @@ const password = ref('');
 const userStore = useUserStore();
 
 const handleLogin = async () => {
+  const csrfToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrftoken='))
+    ?.split('=')[1];  
+    console.log('Sending login request:', { email: email.value, password: password.value, csrfToken });
+    // console.log("CSRF Token:", csrfToken);
   try {
-    await userStore.login(email.value, password.value);  // Call login function from store
+    await userStore.login(email.value, password.value, csrfToken);  // Call login function from store
     if (userStore.accessToken) {
       console.log('Login successful');
-      // Redirect or show user profile after successful login
+      window.location.href = 'http://localhost:5731/profile';// Redirect or show user profile after successful login
     }
   } catch (error) {
     console.error('Login failed:', error);
