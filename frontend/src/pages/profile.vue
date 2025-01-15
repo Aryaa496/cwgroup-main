@@ -8,6 +8,7 @@
         <ul>
             <li v-for="hobby in userStore.user.hobbies" :key="hobby">
                 {{ hobby }}
+
                 
             </li>
         </ul>

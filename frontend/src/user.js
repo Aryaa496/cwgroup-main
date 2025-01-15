@@ -43,6 +43,7 @@ export const useUserStore = defineStore('user', () => {
           'Authorization': `Bearer ${accessToken.value}`, // Include the token here
         },
       });
+      
   
       if (!response.ok) {
         throw new Error('Failed to fetch user profile');
