@@ -4,6 +4,12 @@
       <p>Name: {{ userStore.user.name }}</p>
       <p>Email: {{ userStore.user.email }}</p>
       <p>Date of Birth: {{ userStore.user.date_of_birth }}</p>
+      <h2>Hobbies</h2>
+        <ul>
+            <li v-for="hobby in userStore.user.hobbies" :key="hobby">
+                {{ hobby }}
+            </li>
+        </ul>
     </div>
     <div v-else>
       <p>Loading...</p>

@@ -55,9 +55,14 @@ def login_view1(request):
 def user_profile(request):
     # Assuming you're fetching the logged-in user's profile from the request
     if request.user.is_authenticated:
+        hobbies = list(request.user.hobbies.values('id', 'name')) 
+        hobby_name = [h['name'] for h in hobbies]
         user_data = {
             'name': request.user.name,
             'email': request.user.email,
+            'date_of_birth':request.user.date_of_birth,
+            'hobbies': hobby_name
+            
         }
         return JsonResponse(user_data)
     return JsonResponse({'error': 'User not authenticated'}, status=401)

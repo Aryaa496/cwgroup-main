@@ -38,6 +38,7 @@ export const useUserStore = defineStore('user', () => {
     try {
       const response = await fetch('http://localhost:8000/profile/', {
         method: 'GET',
+        credentials:'include',
         headers: {
           'Authorization': `Bearer ${accessToken.value}`, // Include the token here
         },
@@ -46,12 +47,16 @@ export const useUserStore = defineStore('user', () => {
       if (!response.ok) {
         throw new Error('Failed to fetch user profile');
       }
+      
   
       const data = await response.json();
       user.value = data;
+      const hobbies = data.hobbies || [];
+        console.log('Hobbies:', hobbies);
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
+    
   };
   
 

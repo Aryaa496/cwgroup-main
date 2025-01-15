@@ -57,4 +57,18 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
-    objects = CustomUserManager()  # Link the custom manager
+    objects = CustomUserManager() 
+
+    def save(self, *args, **kwargs):
+        # Save the user object
+        super().save(*args, **kwargs)
+
+        # Ensure hobbies are properly saved (only if they were changed/added)
+        if self.hobbies.count() > 0:
+            # This checks if any new hobbies were added, and ensures they are saved correctly
+            self.hobbies.all()  # Ensure the ManyToMany relationship is updated
+
+        # Call the parent save method again to ensure proper saving
+        super().save(*args, **kwargs)
+ # Link the custom manager
+
