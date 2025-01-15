@@ -68,9 +68,10 @@ class CustomUser(AbstractUser):
             # This checks if any new hobbies were added, and ensures they are saved correctly
             self.hobbies.all()  # Ensure the ManyToMany relationship is updated
 
+
         # Call the parent save method again to ensure proper saving
         super().save(*args, **kwargs)
-        
+
 
  # Link the custom manager
 
